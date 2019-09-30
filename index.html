@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pokemons</title>
+    <style>
+    h1 {
+      text-align: center;
+    }
+    h2 {
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
+    .test_d {
+      margin: auto;
+      padding: 15px;
+      width: 450px;
+      border-radius: 10px;
+      border: black 3px solid;
+    }
+    .test_d_2 {
+      margin: 5px;
+      padding: 5px;
+    }
+    .btn {
+      width: 100px;
+      height: 30px;
+      border-radius: 3px;
+      border: none;
+    }
+    .start {
+      width: 100px;
+      height: 30px;
+      border-radius: 3px;
+      text-align: center;
+      border: black 3px solid;
+      width: 100%;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .start:hover {
+      background-color: #E1DFDF;
+    }
+    .elem1 {
+      width: 100px;
+      height: 30px;
+      border-radius: 3px;
+      text-align: center;
+      border: black 3px solid;
+      width: 100%;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .elem1:hover {
+      background-color: #E1DFDF;
+    }
+    .elem {
+      width: 100px;
+      height: 30px;
+      border-radius: 3px;
+      text-align: center;
+      border: black 3px;
+      border-style: none solid solid solid;
+      width: 100%;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .elem:hover {
+      background-color: #E1DFDF;
+    }
+    .red {
+      background-color: #FEBFBF;
+    }
+    .green {
+      background-color: #C2FEBF;
+    }
+    li{
+      list-style-type:none;
+    }
+    </style>
+    </head>
+  <body>
+
+    <div class="main">
+      <div id="field" class="test_d">
+        <div class ="test_d_2">
+          <h1 class="q">Pokemons</h1>
+          <h2 id="mainMenu" class="elem1" onclick="showMenu()">Show Menu</h2>
+          <div id="pList" class="pLs"></div>
+          <div id="pInfo" class="pIn hidden"></div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+        let menuArray = ["start_page", "menu", "info"];
+        let checkMenu = menuArray[1];
+        let pokemonCount = 0;
+        let pockemonArray;
+    
+        function showMenu() {
+          if (checkMenu == menuArray[1]) {
+              document.getElementById('mainMenu').innerHTML = "Choose any pokemon from list";
+              checkMenu = menuArray[0];
+              document.getElementById('pList').classList.remove('hidden');
+              document.getElementById('pInfo').classList.add('hidden');
+              request();
+              let inf = document.getElementById("pInfo");
+              while (inf.hasChildNodes()) {  
+                inf.removeChild(inf.firstChild); //удаляет всю инфор о покемоне
+              }
+          } else {
+              document.getElementById('mainMenu').innerHTML = "Show Menu";
+              checkMenu = menuArray[1];
+              document.getElementById('pInfo').classList.remove('hidden');
+              document.getElementById('pList').classList.add('hidden');
+              let list = document.getElementById("pList");
+              while (list.hasChildNodes()) {  
+                list.removeChild(list.firstChild); // удаляет список покемонов
+              }
+          }
+        }
+    
+        function addPokemonToMenu(item, index) {
+	                 var divTag = document.createElement("div");
+               		 divTag.setAttribute('id', index);
+                   if (index == 0) {
+                      divTag.setAttribute('class', "elem1");
+                   } else {
+                      divTag.setAttribute('class', "elem");
+                   }
+               		 divTag.textContent= item.name;
+                   divTag.setAttribute('onclick', 'check(this.id)');
+                 	 document.getElementById("pList").appendChild(divTag);
+           		 }
+
+        
+        async function request() {
+			
+          url = "https://pokeapi.co/api/v2/pokemon/";
+          let response = await fetch(url);
+
+          if (response.ok) {
+            let json = await response.json();
+            let new_url = url + "?limit=" + json.count; // узнаем количество  покемонов
+
+            let new_responce = await fetch(new_url);
+
+            if (new_responce.ok) {
+              let new_json = await new_responce.json();
+              pockemonArray = new_json.results; //получает массив покемонов
+              pockemonArray.forEach(addPokemonToMenu);
+
+            } else {
+              console.log("Response error: " + new_responce.status);
+            }
+
+          } else {
+            console.log("Response error: " + response.status);
+          }	
+        }
+
+
+        async function getPokemonData(url, name){
+            let resp = await fetch(url);
+
+            if (resp.ok) {
+              let jsn = await resp.json();
+              //console.log('WORK');
+              //console.log(jsn);
+              addPokemonInfo(name, jsn.weight, jsn.height, jsn.base_experience);
+
+            } else {
+              console.log("Response error: " + resp.status);
+            }
+        }
+
+
+        function check(clicked_id)
+        {
+            checkMenu = menuArray[2];
+            let thisPokemon = pockemonArray[clicked_id];
+
+            //console.log(thisPokemon);
+            //console.log(thisPokemon.url);
+            //console.log(thisPokemon.name);
+            getPokemonData(thisPokemon.url, thisPokemon.name);
+            
+        }
+
+        function addPokemonInfo(name, weight, height, exp) {
+                   let divTag = document.createElement("div");
+                   divTag.setAttribute('class', "elem1");
+               		 divTag.textContent= "Name: " + name;
+                 	 document.getElementById("pInfo").appendChild(divTag);
+                    divTag = document.createElement("div");
+                   divTag.setAttribute('class', "elem");
+               		 divTag.textContent= "Weight: " + weight;
+                 	 document.getElementById("pInfo").appendChild(divTag);
+                    divTag = document.createElement("div");
+                   divTag.setAttribute('class', "elem");
+               		 divTag.textContent= "Height: " + height;
+                 	 document.getElementById("pInfo").appendChild(divTag);
+                    divTag = document.createElement("div");
+                   divTag.setAttribute('class', "elem");
+               		 divTag.textContent= "Base experience: " + exp;
+                 	 document.getElementById("pInfo").appendChild(divTag);
+                  showMenu();
+        }
+
+
+    </script>
+
+  </body>
+</html>
