@@ -63,6 +63,20 @@ h2 {
   font-size: 24px;
   cursor: pointer;
 }
+.elem-info {
+  width: 100px;
+  border-radius: 3px;
+  text-align: center;
+  border: red 3px;
+  border-style: solid;
+  width: 100%;
+  font-size: 24px;
+  cursor: pointer;
+}
 .elem:hover {
   background-color: #E1DFDF;
+}
+
+.poInfo{
+  display: flex;
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-import PokemonAPI from "./PokemonAPI";
-import PokemonsAPI from "./PokemonsAPI"
 import Body from './Body';
 import './App.css';
 

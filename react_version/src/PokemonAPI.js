@@ -8,6 +8,7 @@ class PokemonAPI extends React.Component {
         this.url = props.url;
         this.name = props.name;
         this.state = { data: {}, status: false };
+        this.className = "elem-info";
     }
 
     async componentDidMount() {	
@@ -16,12 +17,28 @@ class PokemonAPI extends React.Component {
       if (response.ok) {
         let jsn = await response.json();
         let data = {name: this.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience}
-        this.setState({ data, status: true });
+        this.setState({ data: data, status: true });
       } 
     }
     render() {
-      return "test";
+      if (this.state.status) {
+        return (
+          <div className={this.className}>
+            <p>Name: {this.state.data.name}</p>
+            <p>Weight: {this.state.data.weight}</p>
+            <p>Height: {this.state.data.height}</p>
+            <p>BE: {this.state.data.base_experience}</p>
+          </div>
+        );
+      } else {
+        return (
+          <div className={this.className}>
+            <p>Please Wait</p>
+          </div>
+        )
+      }
     }
+    
 
   
 }
