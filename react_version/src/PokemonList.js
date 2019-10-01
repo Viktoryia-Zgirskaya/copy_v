@@ -22,7 +22,6 @@ class PokemonList extends React.Component {
         super(props);
         this.status = props.status;
         this.data = props.data;
-        
     }
 
     
@@ -33,7 +32,6 @@ class PokemonList extends React.Component {
 
     render() {
       if (this.status) {
-          alert(this.status);
         return (
             <div id="pList">
                 {this.data.map((value, index) => (
@@ -47,7 +45,6 @@ class PokemonList extends React.Component {
             </div> 
           );
       } else {
-          alert('pokemon list doesnot work');
         return (
             <div id="pList"></div> 
         );
