@@ -1,10 +1,10 @@
 import React from "react";
 import "./App.css";
-import PokemonDiv from './PokemonDiv';
+import GetPokemonElement from './GetPokemonElement';
 
 
 
-class PokemonList extends React.Component {
+class ShowAllPokemons extends React.Component {
     constructor(props) {
         super(props);
         this.status = props.status;
@@ -16,7 +16,7 @@ class PokemonList extends React.Component {
         return (
             <div id="pList">
                 {this.data.map((pokemon_obj, index) => (
-                    <PokemonDiv
+                    <GetPokemonElement
                         id={index}
                         key={index}
                         name={pokemon_obj.name}
@@ -34,4 +34,4 @@ class PokemonList extends React.Component {
 
 }
 
-export default PokemonList;
+export default ShowAllPokemons;

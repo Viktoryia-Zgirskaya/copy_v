@@ -2,7 +2,7 @@ import React from "react";
 import "./App.css";
 
 
-class PokemonAPI extends React.Component {
+class GetPokemonInfo extends React.Component {
     constructor(props) {
         super(props);
         this.url = props.url;
@@ -63,4 +63,4 @@ class PokemonAPI extends React.Component {
   
 }
 
-export default PokemonAPI;
+export default GetPokemonInfo;

@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import PokemonList from './PokemonList';
+import ShowAllPokemons from './ShowAllPokemons';
 
 
-class PokemonsAPI extends React.Component {
+class GetAllPokemons extends React.Component {
     constructor(props) {
         super(props);
         this.url = "https://pokeapi.co/api/v2/pokemon/";
@@ -31,7 +31,7 @@ class PokemonsAPI extends React.Component {
 
     render() {
       if (this.state.status) {
-        return <PokemonList status={this.state.status} data={this.state.data} />;
+        return <ShowAllPokemons status={this.state.status} data={this.state.data} />;
       } else {
         return (<div className = "elem1">Wait Please</div>);
       }
@@ -40,4 +40,4 @@ class PokemonsAPI extends React.Component {
  
 }
 
-export default PokemonsAPI;
+export default GetAllPokemons;

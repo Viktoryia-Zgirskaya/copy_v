@@ -1,8 +1,8 @@
 import React from "react";
-import PokemonAPI from "./PokemonAPI";
+import GetPokemonInfo from "./GetPokemonInfo";
 import ReactDOM from 'react-dom';
 
-class PokemonDiv extends React.Component {
+class GetPokemonElement extends React.Component {
     constructor(props) {
         super(props);
         this.id = props.id;
@@ -17,21 +17,21 @@ class PokemonDiv extends React.Component {
     }
 
 
-    getPokemonInfo = e => {
+    showPokemonInfo = e => {
       const name = this.name;
       const url = `https://pokeapi.co/api/v2/pokemon/${name}`;
-      ReactDOM.render(<PokemonAPI name={name} url={url} />, document.getElementById("pinfo"));
+      ReactDOM.render(<GetPokemonInfo name={name} url={url} />, document.getElementById("pinfo"));
     };
   
 
   render() {
       
     return (
-      <div onClick={this.getPokemonInfo} className={this.className} id={this.id}>
+      <div onClick={this.showPokemonInfo} className={this.className} id={this.id}>
         {this.name} {this.id}
       </div>
     );
   }
 }
 
-export default PokemonDiv;
+export default GetPokemonElement;
