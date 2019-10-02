@@ -11,7 +11,7 @@ class PokemonAPI extends React.Component {
         this.className = "elem-info";
     }
 
-    async componentDidMount() {	
+     async componentDidMount() {	
       let response = await fetch(this.url);
 
       if (response.ok) {
@@ -19,7 +19,27 @@ class PokemonAPI extends React.Component {
         let data = {name: this.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience}
         this.setState({ data: data, status: true });
       } 
+    } 
+
+    async componentDidUpdate(prevProps, prevState, prevContext) {
+      if(prevProps.name!== this.props.name) {
+       
+        let response = await fetch(this.props.url);
+  
+        if (response.ok) {
+          let jsn = await response.json();
+          let data = {name: jsn.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience}
+          this.setState({ data: data });
+        } 
+      }
+      
     }
+
+
+
+
+
+
     render() {
       if (this.state.status) {
         return (

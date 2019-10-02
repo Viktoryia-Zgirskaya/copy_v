@@ -18,6 +18,7 @@ class PokemonList extends React.Component {
                 {this.data.map((pokemon_obj, index) => (
                     <PokemonDiv
                         id={index}
+                        key={index}
                         name={pokemon_obj.name}
                         url={pokemon_obj.url}
                     />

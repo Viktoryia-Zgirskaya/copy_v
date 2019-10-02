@@ -16,4 +16,4 @@ class PokemonItem extends React.Component {
   }
 }
 
-export default ListItem;
+export default PokemonItem;
