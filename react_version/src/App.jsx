@@ -9,9 +9,7 @@ import GetAllPokemons from './GetAllPokemons' ;
 
 
 class App extends React.Component{
-  constructor(props){
-    super(props)
-}
+  
   render(){
       return (
           <div className="test_d">
