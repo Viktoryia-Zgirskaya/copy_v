@@ -124,9 +124,13 @@ app.post('/pokemon', bodyParser, (req, res, next) => {
       }
     }
 
-    let max_id = Math.max.apply(Math, id_array);
+    if (id_array.length < 1) {
+      body.id = 1;
+    } else {
+      let max_id = Math.max.apply(Math, id_array);
+      body.id = ++max_id;
+    }
 
-    body.id = ++max_id;
   
     if (checker) {
       if (isNaN(parseInt(req.params.pokemon))){

@@ -1,82 +1,61 @@
-h1 {
-  text-align: center;
-}
-h2 {
-  text-align: center;
-}
-
-.hidden {
-  display: none;
-}
-.test_d {
-  margin: auto;
-  margin-top: 15px;  
-  padding: 15px;
-  width: 450px;
-  border-radius: 10px;
-  border: black 3px solid;
-}
-.test_d_2 {
-  margin: 5px;
-  padding: 5px;
-}
-.btn {
-  width: 100px;
-  height: 30px;
-  border-radius: 3px;
-  border: none;
-}
-.start {
-  width: 100px;
-  height: 30px;
-  border-radius: 3px;
-  text-align: center;
-  border: black 3px solid;
-  width: 100%;
-  font-size: 24px;
-  cursor: pointer;
-}
-.start:hover {
-  background-color: #E1DFDF;
-}
-.elem1 {
-  width: 100px;
-  height: 30px;
-  border-radius: 3px;
-  text-align: center;
-  border: black 3px solid;
-  width: 100%;
-  font-size: 24px;
-  cursor: pointer;
-}
-.elem1:hover {
-  background-color: #E1DFDF;
-}
-.elem {
-  width: 100px;
-  height: 30px;
-  border-radius: 3px;
-  text-align: center;
-  border: black 3px;
-  border-style: none solid solid solid;
-  width: 100%;
-  font-size: 24px;
-  cursor: pointer;
-}
-.elem-info {
-  width: 100px;
-  border-radius: 3px;
-  text-align: center;
-  border: red 3px;
-  border-style: solid;
-  width: 100%;
-  font-size: 24px;
-  cursor: pointer;
-}
-.elem:hover {
-  background-color: #E1DFDF;
-}
-
-.poInfo{
+.App {
   display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.pokemonList {
+  width: 50%;
+}
+
+.inFoPokemon {
+  width: 50%;
+}
+
+.container_comments_form {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+}
+
+.comments p {
+  margin: 0 1em;
+}
+
+.user {
+  float: left;
+  font-weight: bolder;
+}
+
+.use_comment {
+  clear: both;
+}
+
+.date {
+  float: right;
+  font-size: 0.7em;
+}
+
+.form {
+  width: 100%;
+}
+
+input,
+textarea {
+  width: 20em;
+  margin: 0 auto;
+  display: block;
+}
+
+.comments {
+  width: 18em;
+  border: 1px solid black;
+  padding: 0.5em;
+  box-sizing: border-box;
+  overflow-x: auto;
+}
+
+.up_container {
+  margin-bottom: 0.5em;
 }

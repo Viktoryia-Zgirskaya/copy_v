@@ -1,26 +1,31 @@
-import React from 'react';
+import React from "react";
+import Detail from "./CurrentPokemon/Detail";
+import List from "./List/List";
+import FormContainer from "./Comments/FormContainer";
+import "./App.css";
 
-import './App.css';
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { name: "", users: [] };
+  }
 
-import GetAllPokemons from './GetAllPokemons' ;
+  getClickName = name => {
+    this.setState({ name });
+  };
 
-
-
-
-
-class App extends React.Component{
-  
-  render(){
-      return (
-          <div className="test_d">
-            <div className ="test_d_2">
-                <h1>Pokemons</h1>
-                <h2 className="elem1">Pokemons List</h2>
-                <div className="poInfo"><GetAllPokemons /><div id="pinfo"></div></div>
-                
-            </div>
-          </div>
-      )
+  render() {
+    return (
+      <div className="App">
+        <List name={this.state.name} getClickName={this.getClickName} />
+        {this.state.name && (
+          <>
+            <Detail name={this.state.name} />
+            <FormContainer name={this.state.name} />
+          </>
+        )}
+      </div>
+    );
   }
 }
 
