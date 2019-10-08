@@ -3,20 +3,18 @@ const app = express();
 const fs = require('fs');
 
 
-
-  const bodyParser = (req, res, next) => {
-    let bodyData = '';
-    req.on('data', (data) => {
-      bodyData += data;
-    });
-    req.on('end', () => {
-      if (bodyData) {
-        req.body = JSON.parse(bodyData);
-      }
-      next();
-    });
-  };
-
+const bodyParser = (req, res, next) => {
+  let bodyData = '';
+  req.on('data', (data) => {
+    bodyData += data;
+  });
+  req.on('end', () => {
+    if (bodyData) {
+      req.body = JSON.parse(bodyData);
+    }
+    next();
+  });
+};
 
 
 function getData() {
@@ -29,6 +27,11 @@ function addData(data, res) {
   res.send(data);
 }
 
+function addPokemon(data, name, res) {
+  fs.writeFileSync("./data.json", JSON.stringify(data), "utf8");
+  res.send(data[name]);
+}
+
 
 app.get('/pokemon/:value', (req, res, next) => {
   let data = getData();
@@ -36,14 +39,14 @@ app.get('/pokemon/:value', (req, res, next) => {
   let checker = true; 
   if (isNaN(parseInt(req.params.value))){
     for (let pok in data) {
-      if (data[pok].name === req.params.value){
+      if (data[pok].name == req.params.value){
         result = data[pok];
         checker = false;
       }
     }
   } else {
     for (let pok in data) {
-      if (data[pok].id === req.params.value){
+      if (data[pok].id == req.params.value){
         result = data[pok];
         checker = false;
       }
@@ -53,6 +56,29 @@ app.get('/pokemon/:value', (req, res, next) => {
     res.status(404).send("Element not found");
   }else{
     res.send(result);
+  }
+});
+
+
+app.get('/pokemon', (req, res, next) => {
+  let data = getData();
+  res.send(data);
+});
+
+app.post('/pokemon', bodyParser, (req, res, next) => {
+  let data = getData();
+  const body = req.body;
+  let checker = true; 
+  for (let pok in data) {
+    if (data[pok].name == body.name){
+      checker = false;
+    }
+  }
+  if(checker){
+    data[body.name] = {"id":body.id, "name": body.name, "comments": []};
+    addPokemon(data, body.name, res);
+  } else {
+    res.send(data[body.name]);
   }
 });  
 
@@ -64,14 +90,14 @@ app.get('/pokemon/:value', (req, res, next) => {
     let checker = true;
     if (isNaN(parseInt(req.params.pokemon))){
       for (let pok in data) {
-        if (data[pok].name === req.params.pokemon){
+        if (data[pok].name == req.params.pokemon){
           result = data[pok].comments;
           checker = false;
         }
       }
     } else {
       for (let pok in data) {
-        if (data[pok].id === req.params.pokemon){
+        if (data[pok].id == req.params.pokemon){
           result = data[pok].comments;
           checker = false;
 
@@ -90,24 +116,28 @@ app.get('/pokemon/:value', (req, res, next) => {
     const body = req.body;
     let checker = true;
     
+    let id_array = [];
+
     for (let pok in data) {
       for (let i = 0; i < data[pok].comments.length; i++) {
-        if (data[pok].comments[i].id === body.id){
-          checker = false;
-        } 
+        id_array.push(data[pok].comments[i].id);
       }
     }
+
+    let max_id = Math.max.apply(Math, id_array);
+
+    body.id = ++max_id;
   
     if (checker) {
       if (isNaN(parseInt(req.params.pokemon))){
         for (let pok in data) {
-          if (data[pok].name === req.params.pokemon){
+          if (data[pok].name == req.params.pokemon){
             data[pok].comments.push(body);
           }
         }
       } else {
         for (let pok in data) {
-          if (data[pok].id === req.params.pokemon){
+          if (data[pok].id == req.params.pokemon){
             data[pok].comments.push(body);
           }
         }
@@ -132,9 +162,9 @@ app.get('/pokemon/:value', (req, res, next) => {
 
     if (isNaN(parseInt(req.params.pokemon))){
       for (let pok in data) {
-        if (data[pok].name === req.params.pokemon){
+        if (data[pok].name == req.params.pokemon){
           for (let i = 0; i < data[pok].comments.length; i++) {
-            if (data[pok].comments[i].id === req.params.comment_id){
+            if (data[pok].comments[i].id == req.params.comment_id){
               data[pok].comments[i] = body;
               checker = false;
             } 
@@ -143,9 +173,9 @@ app.get('/pokemon/:value', (req, res, next) => {
       }
     } else {
       for (let pok in data) {
-        if (data[pok].id === req.params.pokemon){
+        if (data[pok].id == req.params.pokemon){
           for (let i = 0; i < data[pok].comments.length; i++) {
-            if (data[pok].comments[i].id === req.params.comment_id){
+            if (data[pok].comments[i].id == req.params.comment_id){
               data[pok].comments[i] = body;
               checker = false;
             } 
@@ -170,7 +200,7 @@ app.get('/pokemon/:value', (req, res, next) => {
 
     for (let pok in data) {
       for (let i = 0; i < data[pok].comments.length; i++) {
-        if (data[pok].comments[i].id === req.params.comment_id){
+        if (data[pok].comments[i].id == req.params.comment_id){
           checker = true;
         } 
       }
@@ -179,10 +209,10 @@ app.get('/pokemon/:value', (req, res, next) => {
     if (checker) {
       if (isNaN(parseInt(req.params.pokemon))){
         for (let pok in data) {
-          if (data[pok].name === req.params.pokemon){
+          if (data[pok].name == req.params.pokemon){
             let temp_comments_array = [];
             for (let i = 0; i < data[pok].comments.length; i++) {
-              if (data[pok].comments[i].id !== req.params.comment_id){
+              if (data[pok].comments[i].id != req.params.comment_id){
                 temp_comments_array.push(data[pok].comments[i]);
               }
             }
@@ -191,10 +221,10 @@ app.get('/pokemon/:value', (req, res, next) => {
         }
       } else {
         for (let pok in data) {
-          if (data[pok].id === req.params.pokemon){
+          if (data[pok].id == req.params.pokemon){
             let temp_comments_array = [];
             for (let i = 0; i < data[pok].comments.length; i++) {
-              if (data[pok].comments[i].id !== req.params.comment_id){
+              if (data[pok].comments[i].id != req.params.comment_id){
                 temp_comments_array.push(data[pok].comments[i]);
               }
             }

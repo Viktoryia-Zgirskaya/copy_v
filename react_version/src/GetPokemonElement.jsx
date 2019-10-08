@@ -16,11 +16,10 @@ class GetPokemonElement extends React.Component {
 
   }
 
-  async componentDidMount() {
+  /* async componentDidMount() {
     let response = await fetch('/pokemon/Test1')
     let result = await response.json();
-    console.log(result);
-  }
+  } */
   
   showPokemonInfo = e => {
     const name = this.name;
@@ -33,7 +32,7 @@ class GetPokemonElement extends React.Component {
 
     return (
       <div onClick={this.showPokemonInfo} className={this.className} id={this.id}>
-        {this.name} {this.id}
+        {this.name}
       </div>
     );
   }

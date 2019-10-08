@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.css";
+import NewCommentInput from "./NewCommentInput";
 
 
 class GetPokemonInfo extends React.Component {
@@ -16,7 +17,17 @@ class GetPokemonInfo extends React.Component {
 
       if (response.ok) {
         let jsn = await response.json();
-        let data = {name: this.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience}
+        // NEW METHOD START !!!!!!
+        let new_response = await fetch('/pokemon', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+          },
+          body: JSON.stringify(jsn)
+        });
+        let result = await new_response.json();
+        // NEW METHOD FINISHED !!!!!!
+        let data = {id: result.id, name: result.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience, comments: result.comments}
         this.setState({ data: data, status: true });
       } 
     } 
@@ -28,7 +39,17 @@ class GetPokemonInfo extends React.Component {
   
         if (response.ok) {
           let jsn = await response.json();
-          let data = {name: jsn.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience}
+          // NEW METHOD START !!!!!!
+          let new_response = await fetch('/pokemon', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json;charset=utf-8'
+            },
+            body: JSON.stringify(jsn)
+          });
+          let result = await new_response.json();
+          // NEW METHOD FINISHED !!!!!!
+          let data = {id: result.id, name: result.name, weight: jsn.weight, height: jsn.height, base_experience: jsn.base_experience, comments: result.comments}
           this.setState({ data: data });
         } 
       }
@@ -48,6 +69,8 @@ class GetPokemonInfo extends React.Component {
             <p>Weight: {this.state.data.weight}</p>
             <p>Height: {this.state.data.height}</p>
             <p>BE: {this.state.data.base_experience}</p>
+            <p><NewCommentInput user_id={this.state.data.id}/></p>
+            <p>Comments: {this.state.data.comments}</p>
           </div>
         );
       } else {
